@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>index.knit</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Mikhail Dozmorov, Ph.D." />
+    <script src="libs/header-attrs-2.28/header-attrs.js"></script>
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/xaringan-my.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: center, middle
+
+# 3D genomics of drug resistance in breast cancer
+
+&lt;!-- [mdozmorov.github.io/RFU](https://mdozmorov.github.io/RFU) --&gt;
+
+Mikhail Dozmorov, Ph.D.   
+Associate professor  
+Department of Biostatistics  
+Virginia Commonwealth University   
+
+&lt;div class="my-footer"&gt;
+&lt;a href="https://dozmorovlab.github.io/"&gt; &lt;svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M528 32H48C21.5 32 0 53.5 0 80v16h576V80c0-26.5-21.5-48-48-48zM0 432c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V128H0v304zm352-232c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16zm0 64c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16zm0 64c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16zM176 192c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64zM67.1 396.2C75.5 370.5 99.6 352 128 352h8.2c12.3 5.1 25.7 8 39.8 8s27.6-2.9 39.8-8h8.2c28.4 0 52.5 18.5 60.9 44.2 3.2 9.9-5.2 19.8-15.6 19.8H82.7c-10.4 0-18.8-10-15.6-19.8z"&gt;&lt;/path&gt;&lt;/svg&gt; dozmorovlab.github.io&lt;/a&gt; | 
+&lt;a href="https://github.com/mdozmorov"&gt; &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; mdozmorov&lt;/a&gt; | 
+&lt;a href="https://twitter.com/mikhaildozmorov"&gt; &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; @mikhaildozmorov&lt;/a&gt;
+&lt;/div&gt;
+
+
+&lt;style type="text/css"&gt;
+.pull-leftthreequarters {
+float: left;
+width: 80%;
+}
+.pull-rightquarter {
+float: right;
+width: 20%;
+}
+.pull-rightquarter ~ p {
+clear: both;
+}
+&lt;/style&gt;
+
+---
+## The 3D structure of the human genome
+
+- Human genome is big - ~3.1 billion base pairs
+    - ~2.5 billion heartbeats per average lifetime
+- ~4 meters (~12ft) of the genome is packed into ~10um nucleus
+    - ~10.6 miles in a golf ball (1.68in)
+&lt;!-- ~800 trips from Earth to Sun in ~30T cells from the human body--&gt;
+
+&lt;div style="float: left; width: 70%;"&gt;
+&lt;img src="img/genome_scales.png" width = 700&gt;
+&lt;/div&gt;
+
+&lt;div style="float: right; width: 30%;"&gt;
+
+&lt;div style="font-size: small;"&gt; 
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+Human body has approximately 12 trillion DNA-containing cells (out of 37.2 T, 80% of which are DNA-free red blood cells); Stretched haploid genome would be roughly 2 meters - each cell has 4 meters of DNA (1 m = 3.28 ft); 12 T * 4 m = 48 trillion meters; Convert to miles: 48 trillion meters / 1609.34 = 2.98*10^{10}; Convert to Earth-Sun distance: 2.98*10^{10} / 91.43*10^6 = 326.22
+&lt;p&gt;
+Nucleus diameter - 10*10^{-6}m, Golf ball diameter - 42.67*10^{-3}. Scaling factor - 4.267*10^3. Scaled 4m of DNA - 17068m. In miles - 10.6mi
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;!---
+## Genetic variants affect 3D interactions
+
+.pull-left[
+
+- Genetic variants can disrupt 3D structures which leads to rewiring of enhancer-promoter interactions and gene misexpression.
+
+- Rewiring of 3D interactome can cause malformation syndromes.
+
+- Different variants result in different rewiring and phenotypes.
+]
+.pull-right[
+
+&lt;img src="img/disruption.png" height=400&gt;
+]
+
+.small[ Lupiáñez, DG. et al. “[Disruptions of Topological Chromatin Domains Cause Pathogenic Rewiring of Gene-Enhancer Interactions](https://doi.org/10.1016/j.cell.2015.04.004).” Cell, 2015. ]
+--&gt;
+
+---
+## Integrative genomics in three dimensions (3D)
+
+.pull-left[ 
+- 3D folding enables distant enhancer-promoter interactions and gene expression regulation. 
+
+- Changes in the 3D genome organization are an ~~emerging~~ established hallmark of cancer and developmental disorders.
+
+- Epigenomic signatures are associated with the 3D genome folding.
+]
+
+.pull-right[ .center[&lt;img src="img/multiomics1.png" height = 450&gt;] ]
+
+---
+## Chromatin conformation capture technologies 
+
+&lt;!--
+.pull-left[
+
+- Ligation-based
+    - Hi-C (3C, 4C, 5C)   
+    - Capture-(Hi)C, ChIA-PET  
+    - Single-cell variants  
+
+- Ligation-free
+    - SPRITE, GAM, ChIA-Drop  
+
+- Specialized
+    - Methyl-HiC
+]
+
+.pull-right[ 
+&lt;img src="img/proximity_ligation.png" height = 250&gt; 
+&lt;br&gt;
+&lt;br&gt;
+]
+--&gt;
+
+**Hi-C technology**
+
+&lt;center&gt;&lt;img src="img/proximity_ligation.png" height = 350&gt; &lt;/center&gt;
+
+.small[ Lieberman-Aiden, Erez et al. “[Comprehensive Mapping of Long-Range Interactions Reveals Folding Principles of the Human Genome](https://doi.org/10.1126/science.1181369)” _Science_, October 9, 2009 ]
+
+---
+## Hi-C Data as a matrix of contacts
+
+.pull-left[
+- The genome (chromosome) is split into equally sized regions
+
+- Data is represented by a symmetric matrix of contacts `\(C_{ij}\)` where entry `\(ij\)` corresponds to the number of times region `\(i\)` comes into contact with region `\(j\)`
+
+- Off-diagonal data view - increasing **distance** between interacting regions
+
+- Power-law decay of interactions with increasing **distance**
+]
+
+.pull-right[
+&lt;img src="img/hicmatrix.png" width = 470&gt;
+]
+
+---
+## 3D genomics R packages
+
+- [HiCcompare](https://bioconductor.org/packages/HiCcompare/) - Joint normalization to removes between-dataset biases 
+
+- [multiHiCcompare](https://bioconductor.org/packages/multiHiCcompare/) - Differential analysis considering distance
+
+- [SpectralTAD](https://bioconductor.org/packages/SpectralTAD/) - TAD detection using spectral clustering
+
+- [TADcompare](https://bioconductor.org/packages/TADCompare/) - Differential and time course analysis of TAD boundaries
+
+- [preciseTAD](https://bioconductor.org/packages/preciseTAD/) – A transfer learning framework for TAD boundary prediction
+
+.center[&lt;img src="img/multiHiCcompare_glm.png" height = 150&gt;]
+
+.pull-left[ .small[[bit.ly/3Dgenomics](https://mdozmorov.github.io/Talk_3Dgenome/)] ]
+.pull-right[ .small[https://github.com/mdozmorov/HiC_tools ] ]
+
+---
+## Integrative analysis of differential regions
+
+.pull-left[ 
+
+- Normalization and differential analysis of Hi-C datasets
+
+- Integration of differentially interacting regions with genes, epigenomic data, motif analysis
+
+- Manhattan plot-like visualization
+
+.center[&lt;img src="img/tutorial_manhattan.png" height = 200&gt;]
+
+]
+
+.pull-right[ .center[&lt;img src="img/Tutorial_Front_cover.png" height = 400&gt;] ]
+
+.small[ Stansfield, John C., Duc Tran, Tin Nguyen, and Mikhail G. Dozmorov. “[R Tutorial: Detection of Differentially Interacting Chromatin Regions From Multiple Hi-C Datasets](https://doi.org/10.1002/cpbi.76)” _Curr Prot in Bioinformatics_, May 24, 2019
+]
+
+---
+class: center, middle
+
+# 3D genomics of drug resistance in breast cancer
+
+## PDX Hi-C project
+
+&lt;br&gt;&lt;br&gt;
+
+.center[&lt;img src="img/funding.png" height = 100&gt;]
+
+---
+## PDX HiC project: 3D genomics of drug resistance
+
+- Patient Derived Xenograft (PDX) mouse models of breast cancer  
+- Progression of primary tumor (**PR**) to drug resistant (**CR**) states
+- UCD52 - Triple-Negative Breast Cancer cells
+
+.pull-left[&lt;img src="img/Figure_1a.png" height = 300&gt;]
+.pull-right[&lt;img src="img/Figure_1b.png" height = 300&gt;]
+
+---
+## RNA-seq: Ribosomal and oxidative phosphorylation are upregulated in drug resistance
+
+.center[&lt;img src="img/Figure_2a.png" height = 500&gt;]
+
+---
+## Ribosome pathway
+
+.center[&lt;img src="img/Supplementary_Figure_6a.png" height = 550&gt;] 
+
+---
+## Oxidative phosphorylation pathway
+
+.center[&lt;img src="img/Supplementary_Figure_6b.png" height = 550&gt;] 
+
+---
+## Drug-resistant genes enriched in aggressiveness, stemness signatures
+
+.center[&lt;img src="img/RNAseq_GSEA.png" height = 450&gt;] 
+
+---
+## Upregulation of long noncoding RNAs (lncRNAs) in drug resistance
+
+| Biotype                | Count Upregulated | Count Downregulated |  p.value  |
+|------------------------|:-----------------:|:-------------------:|:---------:|
+| lncRNA                 | **&lt;span style="color:red;"&gt;317&lt;/span&gt;** | 54 | **1.238e-42** |
+| misc_RNA               |         3         |          0          | 2.696e-01 |
+| polymorphic_pseudogene |         1         |          0          | 1.000e+00 |
+| processed_pseudogene   |         24        |          3          | 2.088e-04 |
+| protein_coding         |        1637       |         1837        | 1.065e-46 |
+| ---                    |        ---        |         ---         |           |
+| Total                  |        2052       |         1933        |           |
+
+---
+## Long noncoding RNAs are associated with a more aggressive breast cancer phenotype
+
+.center[&lt;img src="img/Figure_2d.png" height = 450&gt;] 
+.small[LncSEA, http://bio.liclab.net/LncSEA/Analysis.php]
+
+---
+## Insights from Whole Genome Sequencing
+
+- Fewer alterations in drug resistant state, but they are longer
+
+| Sample                    | UCD52PR                        | UCD52CR                        |
+|---------------------------|--------------------------------|--------------------------------|
+| Total CNVs                |                   6,638        |                   &lt;span style="color:red;"&gt;6,126&lt;/style&gt;        |
+| Total Amp                 |                   4,100        |                   3,944        |
+| Total Del                 |                   2,538        |                   2,182        |
+| Amplification Length (bp) |        **700,703,500**         |        **&lt;span style="color:red;"&gt;770,868,400&lt;/span&gt;**         |
+| Deletion Length (bp)      |        **527,398,800**         |        **&lt;span style="color:red;"&gt;537,747,800&lt;/span&gt;**         |
+| Exonic                    |                   3,189        |                   3,090        |
+| Splicing                  |                           -    |                           -    |
+| NcRNA                     |                           -    |                           -    |
+| Intronic                  |                      858       |                      744       |
+| 5' UTRs                   |                           -    |                           -    |
+| 3' UTRs                   |                           -    |                           -    |
+| Upstream                  |                      115       |                      108       |
+| Downstream                |                          85    |                          73    |
+| Intergenic                |                   2,391        |                   2,111        |
+
+---
+## Insights from Whole Genome Sequencing
+
+- More Novel, Synonymous, and Missense SNPs
+
+| Sample     | UCD52PR                | UCD52CR                |
+|------------|------------------------|------------------------|
+| Total SNPs |        2,970,517       |        2,952,993       |
+| Novel      |       **42,523**           |       **&lt;span style="color:red;"&gt;54,643&lt;/span&gt;**        |
+| Synonymous |             **11,867**     |             **&lt;span style="color:red;"&gt;14,215&lt;/span&gt;**     |
+| Missense   |               **9,356**    |               **&lt;span style="color:red;"&gt;9,735&lt;/span&gt;**    |
+| Stopgain   |                    69  |                    67  |
+| Stoploss   |                    25  |                    25  |
+| Startloss  |                    18  |                    16  |
+| Splicing   |                  150   |                  154   |
+| Ti/Tv      |                 2.76   |                 2.70   |
+
+---
+## WGS: Twice as many deletions than amplifications acquired in the drug-resistant genome
+
+- Deletions: 202.11Mb total width (6.52% of the genome)
+- Duplications: 114.60Mb total width (3.70% of the genome)
+
+.center[&lt;img src="img/Figure_3a.png" height = 300&gt;] 
+
+---
+## ABC transporters are amplified in drug resistance
+
+.center[&lt;img src="img/Figure_3b.png" height = 520&gt;] 
+
+---
+## Known breast cancer amplicons are enriched in drug-resistant CNVs
+
+.center[&lt;img src="img/Figure_3d.png" height = 500&gt;] 
+
+---
+## Gene expression and CNVs are correlated 
+
+.center[&lt;img src="img/Figure_3c.png" height = 500&gt;] 
+
+---
+## Analysis of PDX Hi-C data (PDX Hi-C)
+
+.pull-left[ 
+- Mouse reads minimally affect Hi-C data - direct alignment to the human genome works well.  
+
+- Processing pipeline plays minimal role.
+
+- Technology is the most important for data quality.
+]
+
+.pull-right[ .center[&lt;img src="img/PDX_HiC_pipeline.png" height = 500&gt;] ]
+
+.small[Dozmorov, Mikhail G, Katarzyna M Tyc, Nathan C Sheﬃeld, David C Boyd, Amy L Olex, Jason Reed, and J Chuck Harrell. “[Chromatin Conformation Capture (Hi-C) Sequencing of Patient-Derived Xenografts: Analysis Guidelines](https://doi.org/10.1093/gigascience/giab022)” _GigaScience_ April 21, 2021]
+
+---
+## Hi-C: High similarity between Hi-C data replicates
+
+.center[&lt;img src="img/Figure_4a.png" height = 400&gt;]
+
+- Multi-Dimensional Scaling and hierarchical clustering show 3D differences between PR and CR replicates
+
+---
+## More interactions at shorter distances in CR
+
+.center[&lt;img src="img/Figure_4c.png" height = 370&gt;] 
+
+- Power-law distance-dependent decay of interaction frequencies (log10 scales).
+- Slower decay in drug resistance (**CR**) suggests more interactions at shorter distances and fewer at longer distances.
+
+---
+## AB compartments switch to a more active state in drug resistance
+
+.center[&lt;img src="img/Figure_4e.png" height = 350&gt;]
+
+- A compartments are transcriptionally active, gene-dense regions.
+- B compartments are heterochromatin/lamina-associated regions.
+- In drug-resistant state, interactions within A compartments increase.
+
+---
+## AB  compartments switch to a more active state in drug resistance
+
+.center[&lt;img src="img/Figure_4f.png" height = 350&gt;]
+
+- A compartments are transcriptionally active, gene-dense regions.
+- B compartments are heterochromatin/lamina-associated regions.
+- In drug-resistant state, interactions within A compartments increase.
+
+&lt;!--
+## Topologically Associating Domains are stronger in drug resistance (Aggregated TAD Analysis)
+
+.center[&lt;img src="img/ata_spectraltad.png" height = 450&gt;] 
+--&gt;
+
+---
+## More regions are switching to an active state
+
+.center[&lt;img src="img/Figure_5c.png" height = 350&gt;]
+
+- More active compartment switches: 54.31% AA+BA changes.
+
+- Fewer inactive compartments: 45.69% AB+BB changes.
+
+---
+## Activation of many genes, including drug resistance
+
+.center[&lt;img src="img/Figure_5c.png" height = 350&gt;]
+
+- More genes switching into active state: 669 total, 339 (BA) + 330 (AA)
+
+- Fewer genes switching into inactive state: 350 total, 89 (BB) + 261 (AB)
+
+---
+## Drug metabolism genes switching into inactive state in drug resistance 
+
+.center[&lt;img src="img/Figure_5f.png" height = 500&gt;]
+
+---
+## Nearly complete shutdown of drug metabolism
+
+.center[&lt;img src="img/kegg_drug_metabolism.png" height = 550&gt;]
+
+---
+## More loops in drug resistance
+
+.center[
+|           |       Loops          |      Anchors         |
+|-----------|:------------------ -:|:--------------------:|
+| PR total  | **10,652**           |          **21,304**  |
+| CR total  | **&lt;span style="color:red;"&gt;16,716&lt;/span&gt;**  | **&lt;span style="color:red;"&gt;33,432&lt;/span&gt;**  |
+| PR unique | **4,333**            |           **3,041**  |
+| CR unique | **&lt;span style="color:red;"&gt;10,397&lt;/span&gt;**  | **&lt;span style="color:red;"&gt;10,518&lt;/span&gt;**  |
+| PR common | 6,319                |          18,263      |
+| CR common | 6,319                |          22,914      |
+]
+
+.center[&lt;img src="img/Figure_6a.png" height = 180&gt;]
+
+.small[ Ardakany, Abbas Roayaei, Halil Tuvan Gezer, Stefano Lonardi, and Ferhat Ay. "[Mustache: multi-scale detection of chromatin loops from Hi-C and Micro-C maps using scale-space representation](https://doi.org/10.1186/s13059-020-02167-0)." _Genome biology_, (2020) ]
+
+---
+## Condition-specific loops are enriched in condition-specific matrices (Aggregated Peak Analysis)
+
+.center[&lt;img src="img/Figure_6c.png" height = 430&gt;]  
+
+---
+## Condition-specific enhancer-promoter interactions are regulated by long-range loops
+
+.center[&lt;img src="img/mustache_sizes.png" height = 450&gt;] 
+
+---
+## Activation of mTOR, WNT signaling, and other cancer pathways driven by increased looping in drug resistance
+
+.center[&lt;img src="img/Figure_7a.png" height = 450&gt;] 
+
+---
+## Transcription factor binding enrichment analysis
+
+- CR vs. PR-specific loop anchors
+
+- Open chromatin regioin (ATAC-seq) are considered
+
+- **MEME motif enrichment**
+    - PR - nothing significant
+    - CR - BATF, FOS-JUN motifs
+
+- **UniBind TFBS enrichment**
+    - PR - nothing significant
+    - CR - TP53, TP63, ESR1, PAX5, FOS, JUN
+
+---
+## *TP53*, *TP63*, *BATF*, and *FOS-JUN* binding is enriched in drug resistance-specific loop anchors
+
+.center[&lt;img src="img/Figure_7c.png" height = 450&gt;] 
+
+---
+## Topologically Associating Domains are stronger in drug resistance (Aggregated TAD Analysis)
+
+.center[&lt;img src="img/ata_spectraltad.png" height = 450&gt;] 
+
+---
+## Integrative analysis (late) 
+
+Genes supported by a minimum of 4 out of 7 lines of evidence
+
+.center[&lt;img src="img/Figure_7e.png" height = 500&gt;] 
+
+---
+## Increased looping around MYCN gene
+
+.center[&lt;img src="img/washu_mycn.png" height = 550&gt;] 
+
+---
+## Changes in loops, TADs, CNV and gene expression
+
+.center[&lt;img src="img/Supplementary_Figure_5a.png" height = 550&gt;] 
+
+---
+## Immunohistochemistry validation
+
+.center[&lt;img src="img/pdxhic_ihc.png" height = 500&gt;] 
+
+---
+.center[&lt;img src="img/3d_chemoresistance_paper.png" height = 600&gt;] 
+
+---
+## OXPHOS as the primary driver of chemoresistance
+
+- Metabolic pathways, including oxidative phosphorylation ... associated with resistance.  
+- IACS-010759 - OXPHOS inhibitor.  
+.center[&lt;img src="img/OXPHOS_Echeverria.png" height = 400&gt;  ]
+.small[https://doi.org/10.1126/scitranslmed.aav0936]
+
+---
+## Summary: 3D genomics of Drug resistance
+
+- Transcriptome changes suggested the role of long-noncoding RNAs in drug resistance.
+
+- Amplification of ATP-binding cassette (ABC) transporters.
+
+- Increased short-range (&lt;2Mb) interactions and chromatin loops.
+
+- Chromatin state switching into a more active state.
+
+- Members of the TP53 family of transcription factors, as well as FOS-JUN proteins, appear to drive drug resistance.
+
+- Integrative analysis highlighted increased ribosome biogenesis and oxidative phosphorylation, suggesting the role of mitochondrial energy metabolism.
+
+&lt;!-- 
+## Acknowledgements - mentees
+
+.center[&lt;img src="img/members.png" height = 450&gt;] 
+
+Partnering with the "Bioinformatics and Genomics" program at the University of Oregon to mentor students and hire interns. 
+https://internship.uoregon.edu/bioinformatics 
+
+.small[ https://dozmorovlab.github.io/members.html ] --&gt;
+
+---
+## Acknowledgements
+.center[
+.pull-left[ &lt;img src="img/chuckharrell.png" height = 200&gt;
+
+J. Chuck Harrell, Ph.D., Associate professor ]
+.pull-right[ &lt;img src="img/lab_Maggie.png" height = 200&gt;
+
+Maggie Marshall, M.S., Senior Research Assistant ]
+Ferhat Ay (La Jolla Inst. Immunology)  
+Sushmita Roy (UW Madison)  
+.small[ Mikhail G. Dozmorov, Maggie A. Marshall, Narmeen S. Rashid, Jacqueline M. Grible, Aaron Valentine, Amy L. Olex, Kavita Murthy, Abhijit Chakraborty, Joaquin Reyna, Daniela Salgado Figueroa, Laura Hinojosa-Gonzalez, Erika Da-Inn Lee, Brittany A. Baur, Sushmita Roy, Ferhat Ay, J. Chuck Harrell ]
+]
+
+---
+class: center, middle
+
+# Thank you
+
+&lt;br&gt;
+mdozmorov@vcu.edu
+&lt;br&gt;
+
+Questions?
+
+&lt;br&gt; &amp;nbsp;
+
+Blick Research Fund  
+PhRMA Foundation   
+American Cancer Society  
+
+.center[&lt;img src="img/funding.png" height = 50&gt;]
+
+&lt;div class="my-footer"&gt;
+&lt;a href="https://dozmorovlab.github.io/"&gt; &lt;svg viewBox="0 0 576 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M528 32H48C21.5 32 0 53.5 0 80v16h576V80c0-26.5-21.5-48-48-48zM0 432c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V128H0v304zm352-232c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16zm0 64c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16zm0 64c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16zM176 192c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64zM67.1 396.2C75.5 370.5 99.6 352 128 352h8.2c12.3 5.1 25.7 8 39.8 8s27.6-2.9 39.8-8h8.2c28.4 0 52.5 18.5 60.9 44.2 3.2 9.9-5.2 19.8-15.6 19.8H82.7c-10.4 0-18.8-10-15.6-19.8z"&gt;&lt;/path&gt;&lt;/svg&gt; dozmorovlab.github.io&lt;/a&gt; | 
+&lt;a href="https://github.com/mdozmorov"&gt; &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; mdozmorov&lt;/a&gt; | 
+&lt;a href="https://twitter.com/mikhaildozmorov"&gt; &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; @mikhaildozmorov&lt;/a&gt;
+&lt;/div&gt;
+
+
+&lt;!--
+## Interpretation of differentially interacting chromatin regions (DIRs)
+
+- **Visualization of DIRs.** A Manhattan-like plot of DIRs may inform us about abnormalities or reveal chromosome site-specific enrichment of differentially interacting regions
+
+.center[&lt;img src="img/manhattan.png" height = 350&gt;]
+
+
+## Interpretation of differentially interacting chromatin regions (DIRs)
+
+- **Overlap between differentially expressed genes and DIRs.** If gene expression measurements are available, differentially expressed genes may be tested for overlap with DIRs - test the link between DIRs and changed gene expression
+
+- **Functional enrichment of genes overlapping DIRs.** DIRs may disrupt specific pathways/functions - test whether genes overlapping DIRs are enriched in a canonical pathway or share a common function
+
+
+## Interpretation of differentially interacting chromatin regions (DIRs)
+
+- **Overlap enrichment between TAD boundaries and DIRs.** DIRs may correspond to TAD boundaries that are deleted or created - test DIRs for significant overlap with TAD boundaries detected in either condition or only in boundaries changed between the conditions
+
+- **Overlap between DIRs and transcription factor binding sites.** DIRs may correspond to the locations where proteins bind to DNA, such as CTCF sites - test for enrichment of DIRs in any genome annotation (epigenomic mark)
+
+
+## Interpretation of differentially interacting regions
+
+.pull-left[ .center[&lt;img src="img/multiHiCcompare_tutorial.png" height = 450&gt;] ]
+
+.pull-right[ .center[&lt;img src="img/Tutorial_Front_cover.png" height = 450&gt;] ]
+
+.small[ Stansfield, John C., Duc Tran, Tin Nguyen, and Mikhail G. Dozmorov. “[R Tutorial: Detection of Differentially Interacting Chromatin Regions From Multiple Hi-C Datasets](https://doi.org/10.1002/cpbi.76)” _Curr Prot in Bioinformatics_, May 24, 2019
+]
+
+class: center, middle
+
+# preciseTAD
+
+
+## Machine learning for TAD boundary prediction
+
+.pull-left[ 
+- **preciseTAD** – a random forest model using genomic annotations for predicting the probability of each base being a boundary
+
+- Train a model on low-resolution Hi-C regions - binary classification of annotated boundary/non-boundary regions
+
+- Apply the model to each annotated base - predict the likelihood of a base being a boundary
+
+]
+
+.pull-right[ .center[&lt;img src="img/preciseTAD_features.png" height = 400&gt;] 
+]
+
+.small[ Stilianoudakis, Spiro C. “[PreciseTAD: A Machine Learning Framework for Precise 3D Domain Boundary Prediction at Base-Level Resolution](https://doi.org/10.1101/2020.09.03.282186)” _bioRxiv_ Sept 29, 2020]
+
+
+## Machine learning for TAD boundary prediction
+
+.pull-left[ 
+
+- Different resolutions (5kb)
+
+- Four feature engineering techniques (distance)
+
+- Four approaches to class imbalance (RUS or SMOTE)
+
+- Three types of genome annotations (Transcription factors (CTCF, SMC3, RAD21, ZNF143), Histone modifications, Chromatin states)
+]
+
+.pull-right[ .center[&lt;img src="img/preciseTAD_schema.png" height = 500&gt;] 
+]
+
+.small[ Stilianoudakis, Spiro C. “[PreciseTAD: A Machine Learning Framework for Precise 3D Domain Boundary Prediction at Base-Level Resolution](https://doi.org/10.1101/2020.09.03.282186)” _bioRxiv_ Sept 29, 2020]
+
+
+## Machine learning for TAD boundary prediction
+
+.pull-left[ 
+- DBSCAN clustering and PAM to identify boundary regions and summit points  
+
+- Summits are highly enriched in CTCT et al. signal
+
+- Pre-trained models predict boundaries using only genome annotation data 
+
+.small[ Stilianoudakis, Spiro C. “[PreciseTAD: A Machine Learning Framework for Precise 3D Domain Boundary Prediction at Base-Level Resolution](https://doi.org/10.1101/2020.09.03.282186)” _bioRxiv_ Sept 29, 2020]
+]
+
+.pull-right[ .center[&lt;img src="img/preciseTAD_overview.png" height = 500&gt;] 
+]
+--&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
